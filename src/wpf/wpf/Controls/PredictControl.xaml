@@ -1,0 +1,155 @@
+﻿<UserControl x:Class="wpf.Controls.PredictControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+             xmlns:local="clr-namespace:wpf.Controls" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             x:Name="predictcontrol"
+             mc:Ignorable="d" d:DesignWidth="800" Background="White">
+    <UserControl.Resources>
+        <Style TargetType="Border">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="CornerRadius" Value="5"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="MinWidth" Value="80"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Border>
+            <Grid>
+
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*" MinHeight="200"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <Button Content="Classifier" Width="200" FontWeight="Bold"/>
+                        <!--<Slider Minimum="10" Maximum="100" Width="200" Value="100"/>-->
+                        <mah:NumericUpDown x:Name="classifier_num" Minimum="10" Maximum="100" Height="32" Width="150" Value="100" FontWeight="Bold"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Button PreviewMouseUp="Button_PreviewMouseUp_1">
+                            <Button.Content>
+                                <Grid>
+                                    <iconPacks:PackIconModern  VerticalAlignment="Center" Margin="0,0,0,0"
+                              Kind="ControlPlay" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                        <Button PreviewMouseUp="Button_PreviewMouseUp">
+                            <Button.Content>
+                                <Grid>
+                                    <iconPacks:PackIconModern VerticalAlignment="Center" Margin="0,0,0,0"
+                              Height="20"
+                              Kind="ControlStop" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>   
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <oxy:PlotView x:Name="plotview" MinHeight="200" Visibility="Collapsed"/>
+                        <ListView Grid.Row="1" x:Name="classifier_list">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="TIME" Width="200" DisplayMemberBinding="{Binding time}" />
+                                    <GridViewColumn Header="RESULT" Width="200" DisplayMemberBinding="{Binding machine_state}" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Grid>
+                <mah:ProgressRing x:Name="progress_classifier" Visibility="Collapsed" IsActive="False"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1">
+            <Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*" MinHeight="200"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="RUL" Grid.Column="0" Width="200" FontWeight="Bold"/>
+                        <Button Grid.Column="2" PreviewMouseUp="Button_PreviewMouseUp_2">
+                            <Button.Content>
+                                <Grid>
+                                    <iconPacks:PackIconModern  VerticalAlignment="Center" Margin="0,0,0,0"
+                              Height="20"
+                              Kind="ControlPlay" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                        <Button Grid.Column="3" PreviewMouseUp="Button_PreviewMouseUp_3">
+                            <Button.Content>
+                                <Grid>
+                                    <iconPacks:PackIconModern VerticalAlignment="Center" Margin="0,0,0,0"
+                              Height="20"
+                              Kind="ControlStop" />
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="1" IsEnabled="False">
+                        <Grid.Resources>
+                            <Style TargetType="Label">
+                                <Setter Property="FontSize" Value="24"/>
+                            </Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="FontSize" Value="62"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="MinWidth" Value="150"/>
+                                <Setter Property="MaxHeight" Value="150"/>
+                                <Setter Property="Background" Value="Cornsilk"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBox x:Name="txt_predict" Text="0.00" />
+                            <Label VerticalContentAlignment="Center" >Days Left</Label>
+                            <Rectangle Width="100"/>
+                            <TextBox x:Name="txt_similarity" Text="0.00"/>
+                            <Label VerticalContentAlignment="Center">Similarity</Label>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <mah:ProgressRing x:Name="progress_rul" Visibility="Collapsed" IsActive="False"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

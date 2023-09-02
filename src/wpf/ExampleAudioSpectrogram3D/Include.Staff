@@ -1,0 +1,3 @@
+  <Content Include="Content\whistle_48kHz.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </Content>

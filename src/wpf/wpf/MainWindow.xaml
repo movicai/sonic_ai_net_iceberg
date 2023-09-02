@@ -1,0 +1,375 @@
+﻿<mah:MetroWindow xmlns:Wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"  x:Class="wpf.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:c="clr-namespace:wpf.Controls"
+                 x:Name="me"
+                 DataContext="{Binding}"
+                 Title="sonic_ai (poc)"
+                 GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+                 ResizeMode="CanResizeWithGrip"
+                 WindowStartupLocation="CenterScreen"
+                 WindowState="Maximized"
+                 Width="1920" Height="1080"
+                 MaxWidth="1920" MaxHeight="1080"
+                 mc:Ignorable="d">
+    <mah:MetroWindow.Resources>
+    </mah:MetroWindow.Resources>
+    <!--<mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <Button Click="LaunchGitHubSite" ToolTip="Open up the GitHub site">
+                <iconPacks:PackIconModern Width="22"
+                                  Height="22"
+                                  Kind="SocialGithubOctocat" />
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>-->
+
+    <!--<mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button Click="DeployCupCakes" Content="Deploy CupCakes">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconModern Width="22"
+                                        Height="22"
+                                        VerticalAlignment="Center"
+                                        Kind="FoodCupcake" />
+                            <TextBlock Margin="4 0 0 0"
+                         VerticalAlignment="Center"
+                         Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>-->
+
+    <Grid x:Name="gridmain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="stack_tile" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="Collapsed">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+                <Style TargetType="mah:Tile">
+                    <Setter Property="Height" Value="auto"/>
+                </Style>
+            </StackPanel.Resources>
+            <mah:Tile Title="Viewer" x:Name="tile_viewer" Height="40" VerticalTitleAlignment="Center"
+               mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+               Cursor="Hand" DataContext="{Binding ElementName=me}"
+               HorizontalTitleAlignment="Right" PreviewMouseLeftButtonDown="Tile_PreviewMouseLeftButtonDown" Tag="0">
+                <mah:Tile.Style>
+                    <Style TargetType="mah:Tile">
+                        <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                        <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                        <Setter Property="Background" Value="Teal"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Tile_viewer}" Value="True">
+                                <Setter Property="Background" Value="Teal"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tile_viewer}" Value="False">
+                                <Setter Property="Background" Value="Coral"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </mah:Tile.Style>
+                <iconPacks:PackIconModern Width="20" VerticalAlignment="Center" Margin="-50,0,0,0"
+                              Height="60"
+                              Kind="Monitor" />
+            </mah:Tile>
+            <mah:Tile Title="Diagnostics"  x:Name="tile_diagnostics" Height="40" VerticalTitleAlignment="Center"
+               mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+               Cursor="Hand" DataContext="{Binding ElementName=me}"
+               HorizontalTitleAlignment="Right" PreviewMouseLeftButtonDown="Tile_PreviewMouseLeftButtonDown" Tag="1">
+                <mah:Tile.Style>
+                    <Style TargetType="mah:Tile">
+                        <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                        <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                        <Setter Property="Background" Value="Teal"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Tile_diagnostics}" Value="True">
+                                <Setter Property="Background" Value="Teal"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tile_diagnostics}" Value="False">
+                                <Setter Property="Background" Value="Coral"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </mah:Tile.Style>
+                <iconPacks:PackIconModern Width="20" VerticalAlignment="Center" Margin="-50,0,0,0"
+                              Height="20"
+                              Kind="Diagram" />
+            </mah:Tile>
+            <mah:Tile Title="Predict"  x:Name="tile_predict" Height="40" VerticalTitleAlignment="Center"
+               mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+               Cursor="Hand" DataContext="{Binding ElementName=me}" Visibility="Collapsed"
+               HorizontalTitleAlignment="Right" PreviewMouseLeftButtonDown="Tile_PreviewMouseLeftButtonDown" Tag="2">
+                <mah:Tile.Style>
+                    <Style TargetType="mah:Tile">
+                        <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                        <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                        <Setter Property="Background" Value="Teal"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Tile_predict}" Value="True">
+                                <Setter Property="Background" Value="Teal"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tile_predict}" Value="False">
+                                <Setter Property="Background" Value="Coral"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </mah:Tile.Style>
+                <iconPacks:PackIconModern Width="20" VerticalAlignment="Center" Margin="-50,0,0,0"
+                              Height="20"
+                              Kind="Resource" />
+            </mah:Tile>
+            <mah:Tile Title="Settings"  x:Name="tile_settings" Height="40" VerticalTitleAlignment="Center"
+               mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+               Cursor="Hand" DataContext="{Binding ElementName=me}"
+               HorizontalTitleAlignment="Right" PreviewMouseLeftButtonDown="Tile_PreviewMouseLeftButtonDown" Tag="99">
+                <mah:Tile.Style>
+                    <Style TargetType="mah:Tile">
+                        <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                        <!--<Setter Property="VerticalAlignment" Value="Center"/>-->
+                        <Setter Property="Background" Value="Teal"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Tile_settings}" Value="True">
+                                <Setter Property="Background" Value="Teal"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Tile_settings}" Value="False">
+                                <Setter Property="Background" Value="Coral"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </mah:Tile.Style>
+                <iconPacks:PackIconModern Width="20" VerticalAlignment="Center" Margin="-50,0,0,0"
+                              Height="20"
+                              Kind="Settings" />
+            </mah:Tile>
+        </StackPanel>
+        <Border Grid.Row="1" Height="auto" BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5" CornerRadius="5" HorizontalAlignment="Stretch" Visibility="Collapsed">
+            <ToolBarTray>
+                <ToolBarTray.Resources>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Orientation" Value="Horizontal"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="15"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Width" Value="100"/>
+                    </Style>
+                </ToolBarTray.Resources>
+                <ToolBar Band="1" BandIndex="0">
+                    <StackPanel>
+                        <TextBlock>ip from</TextBlock>
+                        <TextBox x:Name="sip">10.1.1.1</TextBox>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock>to</TextBlock>
+                        <TextBox x:Name="eip">10.1.1.255</TextBox>
+                    </StackPanel>
+                    <StackPanel Visibility="Collapsed">
+                        <TextBlock>subnet</TextBlock>
+                        <TextBox x:Name="subnet">255.255.255.0</TextBox>
+                    </StackPanel>
+                </ToolBar>
+                <ToolBar Band="1" BandIndex="1">
+                    <StackPanel>
+                        <TextBlock>heartbeat uri</TextBlock>
+                        <TextBox x:Name="hnuri" Width="200">/deviceinfo/getdeviceinfo</TextBox>
+                    </StackPanel>
+                </ToolBar>
+                <ToolBar Band="1" BandIndex="2">
+                    <Button Width="100" Cursor="Hand" Content="search" x:Name="btnFindDevice" Click="btnFindDevice_Click" Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                        <!--<Button.Content>
+                            <iconPacks:PackIconModern VerticalAlignment="Center" Margin="0,0,0,0"
+                              Height="20"
+                              Kind="Magnify" />
+                        </Button.Content>-->
+                    </Button>
+                    <Rectangle Width="5"/>
+                    <Button  Width="100" Cursor="Hand" Content="manual" x:Name="btn_DeviceManual" Click="btn_DeviceManual_Click" Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                        <!--<Button.Content>
+                            <iconPacks:PackIconModern VerticalAlignment="Center" Margin="0,0,0,0"
+                              Height="20"
+                              Kind="MagnifyAdd" />
+                        </Button.Content>-->
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
+        </Border>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Width="200" Height="auto" BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" HorizontalAlignment="Stretch">
+                <!--<ListView x:Name="list_device" DataContext="{Binding}" Margin="5"/>-->
+                <ListView x:Name="list_device" DataContext="{Binding}" Margin="5" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Devices}" SelectionMode="Extended"  PreviewMouseLeftButtonUp="list_device_PreviewMouseDoubleClick">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <!--<MenuItem Header="Delete" Command="{Binding RemoveItem}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>-->
+                            <!--<MenuItem Header="Add Collecting Server" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp" Visibility="Collapsed"/>-->
+                            <!--<MenuItem Header="Subtract Collecting Server" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_1" Visibility="Collapsed"/>-->
+                            <!--<MenuItem Header="Device Force Reboot" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_2" Visibility="Visible"/>-->
+                            <!--<MenuItem Header="Add Device Manually" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_8"/>-->
+                            <!--<MenuItem Header="Device Force Delete" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_3" />-->
+                            <!--<MenuItem Header="Open Chart Window" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_4" />-->
+                            <MenuItem Header="Edit Item Information" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_5" />
+                            <MenuItem Header="Compare Device Spectrum" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_6" />
+                            <!--<MenuItem Header="Export All Device Info" PreviewMouseLeftButtonUp="MenuItem_PreviewMouseLeftButtonUp_7" />-->
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <Setter Property="ToolTip" Value="{Binding Content, RelativeSource={RelativeSource self}}"/>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
+                            <GridViewColumn>
+                                <GridViewColumn.Header>
+                                    <CheckBox Checked="CheckBox_Checked_1" Unchecked="CheckBox_Unchecked_1" Visibility="Collapsed"/>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" IsChecked="{Binding isselected}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Header="Device ID" DisplayMemberBinding="{Binding name}" Width="150">
+                                <GridViewColumn.HeaderContainerStyle>
+                                    <Style>
+                                        <Setter Property="Control.ToolTip" Value="{Binding ipaddress}"/>
+                                    </Style>
+                                </GridViewColumn.HeaderContainerStyle>
+                            </GridViewColumn>
+                            <!--<GridViewColumn Header="IP" DisplayMemberBinding="{Binding ipaddress}" />-->
+                            <!--<GridViewColumn Header="Subnet" Width="100" DisplayMemberBinding="{Binding subnet}" />-->
+                            <!--<GridViewColumn Header="Description" Width="100" DisplayMemberBinding="{Binding desc}" />-->
+                            <!-- Add more columns as per your requirement -->
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Border>
+            <!--<Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5" Padding="5">-->
+            <TabControl x:Name="tab" Grid.Column="1" Padding="0" Margin="10" SelectionChanged="tab_SelectionChanged" >
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <!--<Setter Property="BorderThickness" Value="1"/>-->
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="MinHeight" Value="34"/>
+                        <Setter Property="Background"  Value="SkyBlue"/>
+                        <!--<Setter Property="FontWeight" Value="Bold"/>-->
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="RealTime" Tag="0">
+                    <Border BorderBrush="Gray" BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                                <!--<RowDefinition Height="auto"/>-->
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5" Visibility="Collapsed">
+                                <Button Content="capture image" Click="Button_Click" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Width="100" Cursor="Hand"/>
+                            </StackPanel>
+                            <Grid x:Name="spec_chart_grid" Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid x:Name="spec_grid">
+                                    <StackPanel x:Name="spec_stack">
+                                        <!--<ContentPresenter Grid.Row="0" x:Name="spec_panel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="{Binding ElementName=spec_grid, Path=ActualHeight}"/>-->
+                                    </StackPanel>
+                                </Grid>
+                                <!--<spec_chart:SpectrumChartControl x:Name="spec_chart" Grid.Row="1" FileOpenEvent="spec_chart_FileOpenEvent"/>-->
+                                <c:DetectResultControl x:Name="dtresult_control" Grid.Row="1" Visibility="Collapsed"/>
+                            </Grid>
+                        </Grid>
+                        <!--<chart:SpectrumChartControl />-->
+                    </Border>
+                </TabItem>
+                <!--<TabItem Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5" Visibility="Collapsed">
+                            <Button Content="capture image" Click="Button_Click_1"/>
+                        </StackPanel>
+                        --><!--<xy_chart:DetectTrendChartControl x:Name="dt_chart" Grid.Row="1"/>--><!--
+                        <Wpf:WebView2 Grid.Row="1" x:Name="trendwebview" Source="http://moviclab.com/"/>
+                    </Grid>
+                </TabItem>-->
+                <!--<TabItem Visibility="Collapsed">
+                    --><!--<c:PredictControl/>--><!--
+                    <ContentPresenter x:Name="predict_panel"/>
+                </TabItem>-->
+                <!--<TabItem Visibility="Collapsed">
+                    <Wpf:WebView2 x:Name="settingwebview" Source="http://moviclab.com/" IsEnabled="False" Visibility="Collapsed"/>
+                </TabItem >-->
+                <TabItem Header="History" Tag="1" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp" >
+                    <Border BorderThickness="1" BorderBrush="Gray">
+                        <Wpf:WebView2 x:Name="historywebview" />
+                    </Border>
+                </TabItem>
+                <TabItem Header="Analysis" Tag="3" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp">
+                    <Border BorderThickness="1" BorderBrush="Gray">
+                        <Wpf:WebView2 x:Name="analysiswebview" />
+                    </Border>
+                </TabItem>
+                <!--<TabItem Header="Node Status" Tag="4" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp" >
+                    <Border BorderThickness="1" BorderBrush="Gray">
+                        <Wpf:WebView2 x:Name="nodestatwebview" Source="{x:Null}" />
+                    </Border>
+                </TabItem>-->
+                <TabItem Header="Edge" Tag="2" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp">
+                    <Border BorderThickness="1" BorderBrush="Gray">
+                        <Grid>
+                            <Wpf:WebView2 x:Name="edgewebview" />
+                        </Grid>
+                    </Border>
+                </TabItem>
+            </TabControl>
+            <!--</Border>-->
+        </Grid>
+
+
+        <!--  Your content  -->
+        <!--<mah:Tile Title="Viewr"
+               Margin="10,10,642,382"
+               mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.ThemeForeground}"
+               Background="Teal"
+               HorizontalTitleAlignment="Right" Height="Auto">
+            <iconPacks:PackIconModern Width="20" VerticalAlignment="Center"
+                              Height="20"
+                              Kind="Settings" />
+        </mah:Tile>-->
+        <!--<TabControl Grid.Row="2" Style="{DynamicResource MahApps.Styles.TabControl.Animated}">
+            <TabItem Header="Viewer"/>
+            <TabItem Header="Diagnosis"/>
+            <TabItem Header="Settings"/>
+        </TabControl>-->
+    </Grid>
+</mah:MetroWindow>

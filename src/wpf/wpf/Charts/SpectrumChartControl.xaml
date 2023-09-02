@@ -1,0 +1,120 @@
+﻿<UserControl x:Class="InteractiveExamples.SpectrumChartControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:InteractiveExamples" mc:Ignorable="d" 
+             d:DesignHeight="334" d:DesignWidth="1005" xmlns:lcu="http://www.arction.com/schemas/"
+             DataContext="{Binding ElementName=SpectrumChart}"
+             Name="SpectrumChart" PreviewMouseWheel="UserControl_PreviewMouseWheel" PreviewDragEnter="UserControl_PreviewDragEnter">
+    <Grid Name="gridBase">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray>
+            <ToolBar Grid.Row="0" ToolBarTray.IsLocked="True" Name="toolBar1">
+                <Button Name="buttonOpen" Click="buttonOpen_Click" Visibility="Collapsed">Open signal file...</Button>
+                <Button Name="buttonStop" Click="buttonStop_Click" Visibility="Collapsed">Stop</Button>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox VerticalAlignment="Center" Name="checkBoxLooping" IsChecked="False" Checked="checkBoxLooping_CheckedChanged" Unchecked="checkBoxLooping_CheckedChanged" Visibility="Collapsed">Looping</CheckBox>
+                </StackPanel>
+                <!--<Separator/>
+                <Button Name="buttonXMinus" Click="buttonXMinus_Click">X-</Button>
+                <Button Name="buttonXPlus" Click="buttonXPlus_Click">X+</Button>-->
+                <Separator/>
+                <Button Name="buttonYMinus" Click="buttonYMinus_Click" >Y-</Button>
+                <Button Name="buttonYPlus" Click="buttonYPlus_Click" >Y+</Button>
+                <Button Name="buttonFitY" Click="buttonFitY_Click" >Fit Y</Button>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox VerticalAlignment="Center" Name="checkBoxAutoYFit" IsEnabled="True" Visibility="Visible" Checked="checkBoxAutoYFit_CheckedChanged" Unchecked="checkBoxAutoYFit_CheckedChanged">Auto-Fit</CheckBox>
+                </StackPanel>
+                <Separator/>
+                <Label Visibility="Visible">Scroll mode:</Label>
+                <StackPanel Orientation="Horizontal" Visibility="Visible">
+                    <ComboBox VerticalAlignment="Center" Name="comboBoxScrollMode" SelectedIndex="1" SelectionChanged="comboBoxScrollMode_SelectionChanged">
+                        <ComboBoxItem Content="None" />
+                        <ComboBoxItem Content="Scrolling" />
+                        <ComboBoxItem Content="Stepping" />
+                        <ComboBoxItem Content="Sweeping" />
+                    </ComboBox>
+                </StackPanel>
+                <Label>FFT display:</Label>
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox VerticalAlignment="Center" Name="comboBoxFFTDisplay" SelectionChanged="comboBoxFFTDisplay_SelectionChanged">
+                        <ComboBoxItem Content="Line spectrum" />
+                        <ComboBoxItem Content="3D spectrum" />
+                        <ComboBoxItem Content="Spectrogram" />
+                        <ComboBoxItem Content="Off" />
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" IsEnabled="True" Visibility="Collapsed">
+                    <Label>FFT window length:</Label>
+                    <ComboBox VerticalAlignment="Center" Name="comboBoxFFTWindowLength" SelectionChanged="comboBoxFFTWindowLength_SelectionChanged" >
+                        <ComboBoxItem Content="256" />
+                        <ComboBoxItem Content="512" />
+                        <ComboBoxItem Content="1024" Visibility="Collapsed"/>
+                        <ComboBoxItem Content="2048" Visibility="Collapsed"/>
+                        <ComboBoxItem Content="4096" Visibility="Collapsed"/>
+                        <ComboBoxItem Content="8192" Visibility="Collapsed"/>
+                        <ComboBoxItem Content="16384" Visibility="Collapsed"/>
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" IsEnabled="True">
+                    <Label>High freq. (Hz):</Label>
+                    <ComboBox VerticalAlignment="Center" Name="comboBoxHighFreq" SelectionChanged="comboBoxHighFreq_SelectionChanged">
+                        <ComboBoxItem Content="2000" />
+                        <ComboBoxItem Content="5000" />
+                        <ComboBoxItem Content="10000" />
+                        <ComboBoxItem Content="50000" />
+                        <ComboBoxItem Content="80000" />
+                        <ComboBoxItem Content="192000" />
+                        <!--<ComboBoxItem Content="384000" />-->
+                        <!--<ComboBoxItem Content="fs / 2" />-->
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" IsEnabled="True">
+                    <Label>Max P(f):</Label>
+                    <ComboBox VerticalAlignment="Center" Name="cmb_maxpf" SelectionChanged="cmb_maxpf_SelectionChanged">
+                        <ComboBoxItem Content="1000" />
+                        <ComboBoxItem Content="5000" />
+                        <ComboBoxItem Content="10000" />
+                        <ComboBoxItem Content="50000" />
+                        <ComboBoxItem Content="100000" />
+                        <ComboBoxItem Content="200000" />
+                        <ComboBoxItem Content="300000" />
+                        <ComboBoxItem Content="400000" />
+                        <ComboBoxItem Content="500000" />
+                        <ComboBoxItem Content="600000" />
+                        <ComboBoxItem Content="700000" />
+                        <ComboBoxItem Content="800000" />
+                        <ComboBoxItem Content="900000" />
+                        <ComboBoxItem Content="1000000" />
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="10,0,0,0" Visibility="Collapsed">
+                    <!--<StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Width" Value="50"/>
+                    </Style>
+                </StackPanel.Resources>-->
+                    <Button Content="Start" Name="btn_start" Click="btn_start_Click" Visibility="Collapsed"></Button>
+                    <Button Content="Stop" Name="btn_stop" Click="btn_stop_Click" Visibility="Collapsed"></Button>
+                    <Label>Signal Queue : </Label>
+                    <TextBox Width="50" Text="{Binding Path=QueueFilesCount, Mode=OneWay}"/>
+                </StackPanel>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" MaxWidth="500" />
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Name="rightChartColumn" Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" x:Name="gridChart" Visibility="Visible" PreviewMouseLeftButtonDown="gridRightChartGrid_PreviewMouseLeftButtonDown" PreviewMouseRightButtonDown="gridRightChartGrid_PreviewMouseLeftButtonDown"/>
+            <GridSplitter Width="5" Grid.Column="1" Name="gridSplitter1" ShowsPreview="true" Visibility="Collapsed"/>
+            <Grid Grid.Column="2" x:Name="gridRightChartGrid" SizeChanged="gridRightChartGrid_SizeChanged" PreviewMouseLeftButtonDown="gridRightChartGrid_PreviewMouseLeftButtonDown"  PreviewMouseRightButtonDown="gridRightChartGrid_PreviewMouseLeftButtonDown"/>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,61 @@
+﻿<Window x:Class="wpf.ManualDeviceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:wpf"
+        mc:Ignorable="d"
+        Title="Device Information" Height="320" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="5"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="MinWidth" Value="100"/>
+                </Style>
+
+            </StackPanel.Resources>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock VerticalAlignment="Center">Device ID</TextBlock>
+                <TextBox x:Name="txt_name" Width="300" Text="{Binding name}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock VerticalAlignment="Center">IP</TextBlock>
+                <TextBox x:Name="txt_ipaddress" Width="300" Text="{Binding ipaddress}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock VerticalAlignment="Center">Subnet</TextBlock>
+                <TextBox x:Name="txt_subnet" Width="300" VerticalAlignment="Center" Text="{Binding subnet}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock VerticalAlignment="Center">History Url</TextBlock>
+                <TextBox x:Name="txt_historyurl" Width="300" VerticalAlignment="Center" Text="{Binding historyurl}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock VerticalAlignment="Center">Edge Url</TextBlock>
+                <TextBox x:Name="txt_edgeurl" Width="300" VerticalAlignment="Center" Text="{Binding edgeurl}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock VerticalAlignment="Center">Description</TextBlock>
+                <TextBox x:Name="txt_desc" Width="300" VerticalAlignment="Center" Text="{Binding desc}"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="MinWidth" Value="100"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="Cancel" Click="Button_Click"></Button>
+            <Button Content="Ok" Click="Button_Click_1"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
