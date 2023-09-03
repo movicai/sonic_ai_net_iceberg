@@ -44,6 +44,16 @@ namespace wpf
     /// </summary>
     public partial class MainWindow : MetroWindow, INotifyPropertyChanged
     {
+        //private ICommand _removeItem;
+
+        //public ICommand RemoveItem
+        //{
+        //    get { return _removeItem; }
+        //    set { _removeItem = value; }
+        //}
+
+        //ObservableCollection<DeviceModel> _devices;
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -61,15 +71,12 @@ namespace wpf
         LastWavResultApiCaller _detectresultapicaller;
         LastWavResultApiCaller _restapi;
         public string _deviceinifile = ConfigurationManager.AppSettings["DEVICE_INI_FILEPATH"].ToString();
-        CoreWebView2EnvironmentOptions _weboptions = new CoreWebView2EnvironmentOptions("--disable-web-security");
-        //CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions("--allow-insecure-localhost");
-        CoreWebView2Environment _webenvironment;// = await CoreWebView2Environment.CreateAsync(null, null, options);
 
+        //public ObservableCollection<DeviceModel> Devices { get => _devices; set { _devices = value; NotifyPropertyChanged("Devices"); }}
         public MainWindow()
         {
             InitializeComponent();
             //_devices = new ObservableCollection<DeviceModel>();
-
             this.Loaded += async (s, e) =>
             {
 
@@ -79,11 +86,7 @@ namespace wpf
                 {
                     list_device.Items.Add(item);
                 }
-                //list_device.Loaded += (ls, le) =>
-                //{
-                //    list_device.SelectedIndex = 0;
-                //};
-                list_device.SelectedIndex = 0;
+
                 //local db 정보 추가
                 //foreach (var item in _db.Devices.ToList())
                 //{
@@ -105,34 +108,37 @@ namespace wpf
                 CollectDeviceApiCaller.Instance.Start();
 
 
+
                 try
                 {
-
                     ///--disable-web-security option enabled all webcontrols
-                    _weboptions = new CoreWebView2EnvironmentOptions("--disable-web-security");
-                    //CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions("--allow-insecure-localhost");
-                    var webenvironment1 = await CoreWebView2Environment.CreateAsync(null, null, _weboptions);//.ConfigureAwait(true);
-                    var webenvironment2 = await CoreWebView2Environment.CreateAsync(null, null, _weboptions);//.ConfigureAwait(true);
-                    var webenvironment3 = await CoreWebView2Environment.CreateAsync(null, null, _weboptions);//.ConfigureAwait(true);
-                    await historywebview.EnsureCoreWebView2Async(webenvironment1);
-                    await analysiswebview.EnsureCoreWebView2Async(webenvironment2);
-                    await edgewebview.EnsureCoreWebView2Async(webenvironment3);
-                    //await nodestatwebview.EnsureCoreWebView2Async(_webenvironment);
-
-                    //var f_historyurl = list_device.Items.OfType<DeviceModel>().FirstOrDefault();
-                    //if (f_historyurl != null)
-                    //{
-                    //    historywebview.Source = new Uri(f_historyurl.historyurl);
-                    //    //edgewebview.Source = new Uri(f_historyurl.edgeurl);
-                    //    //analysiswebview.Source = new Uri(ConfigurationManager.AppSettings["COLLECTING_SERVER_IP"].ToString());
-                    //    //nodestatwebview.Source = new Uri(ConfigurationManager.AppSettings["NODESTAT_SERVER_IP"].ToString());
-                    //}
+                    CoreWebView2EnvironmentOptions options = new CoreWebView2EnvironmentOptions("--disable-web-security");
+                    CoreWebView2Environment environment = await CoreWebView2Environment.CreateAsync(null, null, options);
+                    await historywebview.EnsureCoreWebView2Async(environment);
+                    await analysiswebview.EnsureCoreWebView2Async(environment);
+                    await edgewebview.EnsureCoreWebView2Async(environment);
 
                 }
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
                 }
+
+                //alysiswebview.Source = new Uri(ConfigurationManager.AppSettings["COLLECTING_SERVER_IP"].ToString());
+                //alysiswebview.CoreWebView2.Navigate(ConfigurationManager.AppSettings["COLLECTING_SERVER_IP"].ToString());
+                //analysiswebview.CoreWebView2InitializationCompleted += (es, ee) =>
+                //{
+                //    if (ee.IsSuccess)
+                //    {
+                //        //browser accelate disabled
+                //        analysiswebview.CoreWebView2.Settings.AreBrowserAcceleratorKeysEnabled = false;
+                //        //contextmenu disabled
+                //        analysiswebview.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+                //    }
+                //};
+
+                //analysiswebview.Source = new Uri(ConfigurationManager.AppSettings["COLLECTING_SERVER_IP"].ToString());
+                //analysiswebview.CoreWebView2.Navigate(ConfigurationManager.AppSettings["COLLECTING_SERVER_IP"].ToString());
             };
 
             this.Closing += (s, e) =>
@@ -177,6 +183,15 @@ namespace wpf
 
         }
 
+        private void LaunchGitHubSite(object sender, RoutedEventArgs e)
+        {
+            // Launch the GitHub site...
+        }
+
+        private void DeployCupCakes(object sender, RoutedEventArgs e)
+        {
+            // deploy some CupCakes...
+        }
 
         private void btnFindDevice_Click(object sender, RoutedEventArgs e)
         {
@@ -320,32 +335,32 @@ namespace wpf
                     break;
                 case 99:
                     {
-                        ////settingwebview.CoreWebView2 = ($"http://{_curdevice.ipaddress}:3000");
-                        //this.Tile_viewer = true;
-                        //this.Tile_diagnostics = true;
-                        //this.Tile_settings = false;
-                        //this.Tile_predict = true;
-                        //_settings_auth = false;
+                        //settingwebview.CoreWebView2 = ($"http://{_curdevice.ipaddress}:3000");
+                        this.Tile_viewer = true;
+                        this.Tile_diagnostics = true;
+                        this.Tile_settings = false;
+                        this.Tile_predict = true;
+                        _settings_auth = false;
 
-                        //var wnd = new SettingsAuthWindow();
-                        //wnd.Owner = this;
-                        //wnd.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                        //wnd.AuthResultEvent += (s, re) =>
-                        //{
-                        //    settingwebview.IsEnabled = _settings_auth = re.Result;
-                        //    if (_settings_auth == false)
-                        //    {
-                        //        if (MessageBox.Show("Password incorrect, try again.", "", MessageBoxButton.OK) == MessageBoxResult.OK)
-                        //        {
-                        //            wnd.Close();
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        wnd.Close();
-                        //    }
-                        //};
-                        //wnd.ShowDialog();
+                        var wnd = new SettingsAuthWindow();
+                        wnd.Owner = this;
+                        wnd.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                        wnd.AuthResultEvent += (s, re) =>
+                        {
+                            settingwebview.IsEnabled = _settings_auth = re.Result;
+                            if (_settings_auth == false)
+                            {
+                                if (MessageBox.Show("Password incorrect, try again.", "", MessageBoxButton.OK) == MessageBoxResult.OK)
+                                {
+                                    wnd.Close();
+                                }
+                            }
+                            else
+                            {
+                                wnd.Close();
+                            }
+                        };
+                        wnd.ShowDialog();
                     }
                     break;
                 default:
@@ -392,47 +407,6 @@ namespace wpf
             //(list_device.SelectedItem as DeviceModel).isselected = false;
         }
 
-        public void SpecChartView(DeviceModel curdevice)
-        {
-            var maxcount = Convert.ToInt16(ConfigurationManager.AppSettings["CHART_MAX_OPEN_WINDOW"]);
-            //if (_specwndqueue.Count >= maxcount)
-            //{
-            //    MessageBox.Show($"sorry. You can only open up to {maxcount} charts.");
-            //    return;
-            //}
-            if (_specwndqueue.Count >= 1) return;
-            ContentPresenter spec_content = new ContentPresenter();
-            if (_restapi != null)
-            {
-                _restapi.Stop();
-            }
-            //spectrum viewer
-            if (spec_content.Content != null)
-            {
-                var specchart = spec_content.Content as SpectrumChartControl;
-                specchart.Stop();
-                specchart.Dispose();
-            }
-            SpectrumChartControl spec_chart = new SpectrumChartControl();
-            //spec_chart.FileOpenEvent -= spec_chart_FileOpenEvent;
-            //spec_chart.FileOpenEvent += spec_chart_FileOpenEvent;
-            spec_content.Content = spec_chart;
-            //_restapi = new LastWavResultApiCaller(null, ref spec_chart.QueueFiles);
-            if (curdevice != null)
-            {
-                //_restapi = new LastWavResultApiCaller(_curdevice.ipaddress, ref spec_chart.QueueFiles);
-                _restapi = new LastWavResultApiCaller(curdevice.ipaddress, spec_chart.ChartWavFileQueue);
-                _restapi.Start();
-
-            }
-            var hbind = new Binding("ActualHeight");
-            hbind.ElementName = "spec_grid";
-            spec_content.SetBinding(HeightProperty, hbind);
-            //spec_content.Height = 400;
-            spec_stack.Children.Clear();
-            spec_stack.Children.Add(spec_content);
-
-        }
 
         private void list_device_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -448,19 +422,112 @@ namespace wpf
                 {
                     case 0:
                         {
+                            var maxcount = Convert.ToInt16(ConfigurationManager.AppSettings["CHART_MAX_OPEN_WINDOW"]);
+                            //if (_specwndqueue.Count >= maxcount)
+                            //{
+                            //    MessageBox.Show($"sorry. You can only open up to {maxcount} charts.");
+                            //    return;
+                            //}
+                            if (_specwndqueue.Count >= 1) return;
+                            ContentPresenter spec_content = new ContentPresenter();
+                            if (_restapi != null)
+                            {
+                                _restapi.Stop();
+                            }
+                            //spectrum viewer
+                            if (spec_content.Content != null)
+                            {
+                                var specchart = spec_content.Content as SpectrumChartControl;
+                                specchart.Stop();
+                                specchart.Dispose();
+                            }
+                            SpectrumChartControl spec_chart = new SpectrumChartControl();
+                            //spec_chart.FileOpenEvent -= spec_chart_FileOpenEvent;
+                            //spec_chart.FileOpenEvent += spec_chart_FileOpenEvent;
+                            spec_content.Content = spec_chart;
+                            //_restapi = new LastWavResultApiCaller(null, ref spec_chart.QueueFiles);
+                            if (_curdevice != null)
+                            {
+                                //_restapi = new LastWavResultApiCaller(_curdevice.ipaddress, ref spec_chart.QueueFiles);
+                                _restapi = new LastWavResultApiCaller(_curdevice.ipaddress, spec_chart.ChartWavFileQueue);
+                                _restapi.Start();
 
-                            SpecChartView(_curdevice);
+                            }
+                            var hbind = new Binding("ActualHeight");
+                            hbind.ElementName = "spec_grid";
+                            spec_content.SetBinding(HeightProperty, hbind);
+                            //spec_content.Height = 400;
+                            spec_stack.Children.Clear();
+                            spec_stack.Children.Add(spec_content);
 
                         }
                         break;
                     case 1:
                         {
-                            HistoryWebNavigate(_curdevice);
+                            if (_curdevice != null)
+                            {
+                                var navurl = _curdevice.historyurl;// ConfigurationManager.AppSettings["HISTORY_SERVER_URL"].ToString();
+                                if (historywebview.Source == null)
+                                {
+                                    historywebview.Source = new Uri(navurl);
+                                }
+                                else
+                                {
+                                    historywebview.CoreWebView2.Navigate(navurl);
+                                }
+                                historywebview.NavigationCompleted += async (ns, ne) =>
+                                {
+                                    //string scripts = $"setInterval(() => document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '', 2000);";
+
+                                    string scripts = @"let nIntervId;
+
+                                                            function removeBrand() {
+                                                              if (!nIntervId) {
+                                                                nIntervId = setInterval(removeHTML, 500);
+                                                              }
+                                                            }
+
+                                                            function removeHTML() {
+                                                                if (document.getElementsByClassName('tb-powered-by-footer ng-star-inserted').length >= 1) {
+	                                                                document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '';
+	                                                                clearInterval(nIntervId);
+	                                                                nInterId = null;
+	                                                            }
+                                                            } removeBrand();";
+                                    await historywebview.CoreWebView2.ExecuteScriptAsync(scripts);
+                                };
+
+                                //await historywebview.CoreWebView2.ExecuteScriptAsync("document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = ''");
+                                //await historywebview.CoreWebView2.ExecuteScriptAsync("alert(document.title)");
+                            }
                         }
                         break;
                     case 2:
                         {
-                            EdgeWebNavigate(_curdevice);
+                            //if (predict_panel.Content != null)
+                            //{
+                            //    (predict_panel.Content as Controls.PredictControl).Dispose();
+                            //}
+                            //predict_panel.Content = new PredictControl(_curdevice);
+                            if (_curdevice != null)
+                            {
+                                var navurl = _curdevice.edgeurl; //ConfigurationManager.AppSettings["EDGE_SERVER_URL"].ToString();
+                                //edgewebview.CoreWebView2.Navigate(string.Format(navurl, _curdevice.ipaddress));
+
+                                if (edgewebview.Source == null)
+                                {
+                                    edgewebview.Source = new Uri(navurl);
+                                }
+                                else
+                                {
+                                    edgewebview.CoreWebView2.Navigate(navurl);
+                                }
+
+                                //edgewebview.NavigationCompleted += async (ns, ne) => {
+                                //    await edgewebview.CoreWebView2.ExecuteScriptAsync("document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = ''");
+                                //};
+
+                            }
                         }
                         break;
                     case 3:
@@ -484,11 +551,6 @@ namespace wpf
                             //        analysiswebview.CoreWebView2.Navigate(navurl);
                             //    }
                             //}
-                        }
-                        break;
-                    case 4:
-                        {
-                            //NodeStatWebNavigate(_curdevice);
                         }
                         break;
                     case 99:
@@ -517,206 +579,6 @@ namespace wpf
             catch (Exception ex)
             {
                 _logger.Error(ex.Message);
-            }
-        }
-
-        public async void HistoryWebNavigate(DeviceModel curdevice)
-        {
-            try
-            {
-                if (curdevice != null)
-                {
-                    await Task.Delay(1000);
-                    var navurl = curdevice.historyurl;
-                    //if (historywebview.IsInitialized == false)
-                    //{
-                    //    var webenvironment1 = await CoreWebView2Environment.CreateAsync(null, null, _weboptions).ConfigureAwait(true);
-                    //    //var webenvironment2 = await CoreWebView2Environment.CreateAsync(null, null, _weboptions).ConfigureAwait(true);
-                    //    //var webenvironment3 = await CoreWebView2Environment.CreateAsync(null, null, _weboptions).ConfigureAwait(true);
-                    //    await historywebview.EnsureCoreWebView2Async(webenvironment1);
-                    //    //await analysiswebview.EnsureCoreWebView2Async(webenvironment2);
-                    //    //await edgewebview.EnsureCoreWebView2Async(webenvironment3);
-
-                    //}
-                    //if (historywebview.CoreWebView2 == null)
-                    //{
-                    //    await historywebview.EnsureCoreWebView2Async();
-                    //}
-                    //historywebview.Dispatcher.Invoke(() =>
-                    //{
-                    //    historywebview.CoreWebView2.Navigate(navurl);
-                    //});
-
-                    //if (!historywebview.IsInitialized)
-                    //{
-                    //    await historywebview.EnsureCoreWebView2Async();
-                    //}
-
-                    if (historywebview.Source == null)
-                    {
-                        historywebview.Source = new Uri(navurl);
-                    }
-                    else
-                    {
-                        //if (historywebview.CoreWebView2 != null)
-                        //{
-                        historywebview.CoreWebView2.Navigate(navurl);
-                        //}
-                    }
-
-                    //if (historywebview.CoreWebView2 != null)
-                    //{
-                    //    historywebview.CoreWebView2.Navigate(navurl);
-                    //}
-                    historywebview.NavigationCompleted += async (ns, ne) =>
-                    {
-                        //string scripts = $"setInterval(() => document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '', 2000);";
-
-                        string scripts = @"let nIntervId;
-
-                                                            function removeBrand() {
-                                                              if (!nIntervId) {
-                                                                nIntervId = setInterval(removeHTML, 500);
-                                                              }
-                                                            }
-
-                                                            function removeHTML() {
-                                                                if (document.getElementsByClassName('tb-powered-by-footer ng-star-inserted').length >= 1) {
-	                                                                document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '';
-	                                                                clearInterval(nIntervId);
-	                                                                nInterId = null;
-	                                                            }
-                                                            } removeBrand();";
-                        await historywebview.CoreWebView2.ExecuteScriptAsync(scripts);
-                    };
-
-                }
-
-            }
-            catch (Exception ex) { Logger.Error(ex); }
-        }
-        public async void AnalysisWebNavigate(DeviceModel curdevice)
-        {
-            try
-            {
-                var navurl = ConfigurationManager.AppSettings["COLLECTING_SERVER_IP"].ToString();
-                if (analysiswebview.Source == null)
-                {
-                    analysiswebview.Source = new Uri(navurl);
-                }
-                else
-                {
-                    analysiswebview.CoreWebView2.Navigate(navurl);
-                }
-
-                analysiswebview.NavigationCompleted += async (ns, ne) =>
-                {
-                    //string scripts = $"setInterval(() => document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '', 2000);";
-                    string scripts = @"
-                                        let nIntervId;
-
-                                        function removeBrand() {
-                                          if (!nIntervId) {
-                                            nIntervId = setInterval(removeHTML, 500);
-                                          }
-                                        }
-
-                                        function removeHTML() {
-                                            if (document.getElementsByClassName('tb-powered-by-footer ng-star-inserted').length >= 1) {
-	                                        document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '';
-	                                        clearInterval(nIntervId);
-	                                        nInterId = null;
-	                                        }
-                                        } removeBrand();";
-
-                    await analysiswebview.CoreWebView2.ExecuteScriptAsync(scripts);
-                };
-
-            }
-            catch (Exception ex) { Logger.Error(ex); }
-        }
-        //public async void NodeStatWebNavigate(DeviceModel curdevice)
-        //{
-        //    try
-        //    {
-        //        await Task.Delay(1000);
-        //        var navurl = ConfigurationManager.AppSettings["NODESTAT_SERVER_IP"].ToString();
-        //        //if (nodestatwebview.Source == null)
-        //        //{
-        //        //    nodestatwebview.Source = new Uri(navurl);
-        //        //}
-        //        //else
-        //        //{
-        //        //    if (nodestatwebview.CoreWebView2 != null)
-        //        //    {
-        //        //        nodestatwebview.CoreWebView2.Navigate(navurl);
-        //        //    }
-        //        //}
-        //        if (nodestatwebview.CoreWebView2 == null)
-        //        {
-        //            await nodestatwebview.EnsureCoreWebView2Async();
-        //        }
-        //        nodestatwebview.Dispatcher.Invoke(() =>
-        //        {
-        //            nodestatwebview.CoreWebView2.Navigate(navurl);
-        //        });
-        //        //if (nodestatwebview.CoreWebView2 != null)
-        //        //{
-        //        //    nodestatwebview.CoreWebView2.Navigate(navurl);
-        //        //}
-        //        nodestatwebview.NavigationCompleted += async (ns, ne) =>
-        //        {
-        //            //string scripts = $"setInterval(() => document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '', 2000);";
-
-        //            string scripts = @"let nIntervId;
-
-        //                                                    function removeBrand() {
-        //                                                      if (!nIntervId) {
-        //                                                        nIntervId = setInterval(removeHTML, 500);
-        //                                                      }
-        //                                                    }
-
-        //                                                    function removeHTML() {
-        //                                                        if (document.getElementsByClassName('tb-powered-by-footer ng-star-inserted').length >= 1) {
-        //                                                         document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '';
-        //                                                         clearInterval(nIntervId);
-        //                                                         nInterId = null;
-        //                                                     }
-        //                                                    } removeBrand();";
-        //            await nodestatwebview.CoreWebView2.ExecuteScriptAsync(scripts);
-        //        };
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Logger.Error(ex);
-        //    }
-        //}
-        public async void EdgeWebNavigate(DeviceModel curdevice)
-        {
-            try
-            {
-                if (curdevice != null)
-                {
-                    await Task.Delay(1000);
-
-                    var navurl = curdevice.edgeurl; 
-
-                    if (edgewebview.Source == null)
-                    {
-                        edgewebview.Source = new Uri(navurl);
-                    }
-                    else
-                    {
-                        edgewebview.CoreWebView2.Navigate(navurl);
-                    }
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
             }
         }
 
@@ -749,7 +611,7 @@ namespace wpf
             try
             {
                 var path = Environment.GetFolderPath(System.Environment.SpecialFolder.MyPictures);
-                //CaptureControl(trendwebview, System.IO.Path.Combine(path, string.Format("trendchart_{0}_{1}.png", _curdevice.ipaddress, DateTime.Now.Ticks)));
+                CaptureControl(trendwebview, System.IO.Path.Combine(path, string.Format("trendchart_{0}_{1}.png", _curdevice.ipaddress, DateTime.Now.Ticks)));
             }
             catch (Exception ex)
             {
@@ -823,6 +685,11 @@ namespace wpf
         /// <summary>
         private async void MenuItem_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            //var item = list_device.SelectedItem as DeviceModel;
+            //CollectDeviceModel m = new CollectDeviceModel(item.name, item.ipaddress);
+            //var re = await CollectDeviceApiCaller.Instance.AddDeviceAsync(m);
+
+            //var selecteditems = list_device.SelectedItems.OfType<DeviceModel>();
             var checkeditems = list_device.Items.OfType<DeviceModel>().Where(m => m.isselected == true);
 
             StringBuilder sb = new StringBuilder();
@@ -1097,6 +964,31 @@ namespace wpf
         {
             try
             {
+                //var maxcount = Convert.ToInt16(ConfigurationManager.AppSettings["CHART_MAX_OPEN_WINDOW"]);
+                //if (_specwndqueue.Count >= maxcount)
+                //{
+                //    MessageBox.Show($"sorry. You can only open up to {maxcount} charts.");
+                //    return;
+                //}
+
+                //var checkeditems = list_device.Items.OfType<DeviceModel>().Where(m => m.isselected == true);
+                //if (checkeditems == null || checkeditems.Count() < 2)
+                //{
+                //    MessageBox.Show("Check the device to be compared.");
+                //    return;
+                //}
+
+                //var contentpresenter = spec_stack.Children.OfType<ContentPresenter>().FirstOrDefault();
+                //if (contentpresenter != null)
+                //{
+                //    var specchart = contentpresenter.Content as SpectrumChartControl;
+                //    if (_restapi != null)
+                //    {
+                //        _restapi.Dispose();
+                //    }
+                //    specchart.Dispose();
+                //    spec_stack.Children.Clear();
+                //}
                 var compareitems = checkeditems.ToList().GetRange(0, 2);
                 Wav2MergeMonitor wavcollector = new Wav2MergeMonitor(compareitems.Count);
                 int cnt = 0;
@@ -1213,6 +1105,11 @@ namespace wpf
                             wav2change = false;
                             //wav3change = false;
                             //wav4change = false;
+                            //if (!_isfit)
+                            //{
+                            //    spec_chart.FitY();
+                            //    _isfit = true;
+                            //}
                         }
                     }
                 };
@@ -1235,6 +1132,31 @@ namespace wpf
         {
             try
             {
+                //var maxcount = Convert.ToInt16(ConfigurationManager.AppSettings["CHART_MAX_OPEN_WINDOW"]);
+                //if (_specwndqueue.Count >= maxcount)
+                //{
+                //    MessageBox.Show($"sorry. You can only open up to {maxcount} charts.");
+                //    return;
+                //}
+
+                //var checkeditems = list_device.Items.OfType<DeviceModel>().Where(m => m.isselected == true);
+                //if (checkeditems == null || checkeditems.Count() < 2)
+                //{
+                //    MessageBox.Show("Check the device to be compared.");
+                //    return;
+                //}
+
+                //var contentpresenter = spec_stack.Children.OfType<ContentPresenter>().FirstOrDefault();
+                //if (contentpresenter != null)
+                //{
+                //    var specchart = contentpresenter.Content as SpectrumChartControl;
+                //    if (_restapi != null)
+                //    {
+                //        _restapi.Dispose();
+                //    }
+                //    specchart.Dispose();
+                //    spec_stack.Children.Clear();
+                //}
                 var compareitems = checkeditems.ToList().GetRange(0, 3);
                 Wav2MergeMonitor wavcollector = new Wav2MergeMonitor(compareitems.Count);
                 int cnt = 0;
@@ -1340,6 +1262,12 @@ namespace wpf
                             wav1change = false;
                             wav2change = false;
                             wav3change = false;
+                            //wav4change = false;
+                            //if (!_isfit)
+                            //{
+                            //    spec_chart.FitY();
+                            //    _isfit = true;
+                            //}
                         }
                     }
                 };
@@ -1358,6 +1286,31 @@ namespace wpf
         {
             try
             {
+                //var maxcount = Convert.ToInt16(ConfigurationManager.AppSettings["CHART_MAX_OPEN_WINDOW"]);
+                //if (_specwndqueue.Count >= maxcount)
+                //{
+                //    MessageBox.Show($"sorry. You can only open up to {maxcount} charts.");
+                //    return;
+                //}
+
+                //var checkeditems = list_device.Items.OfType<DeviceModel>().Where(m => m.isselected == true);
+                //if (checkeditems == null || checkeditems.Count() < 2)
+                //{
+                //    MessageBox.Show("Check the device to be compared.");
+                //    return;
+                //}
+
+                //var contentpresenter = spec_stack.Children.OfType<ContentPresenter>().FirstOrDefault();
+                //if (contentpresenter != null)
+                //{
+                //    var specchart = contentpresenter.Content as SpectrumChartControl;
+                //    if (_restapi != null)
+                //    {
+                //        _restapi.Dispose();
+                //    }
+                //    specchart.Dispose();
+                //    spec_stack.Children.Clear();
+                //}
                 var compareitems = checkeditems.ToList().GetRange(0, 4);
                 Wav2MergeMonitor wavcollector = new Wav2MergeMonitor(compareitems.Count);
                 int cnt = 0;
@@ -1464,6 +1417,11 @@ namespace wpf
                             wav2change = false;
                             wav3change = false;
                             wav4change = false;
+                            //if (!_isfit)
+                            //{
+                            //    spec_chart.FitY();
+                            //    _isfit = true;
+                            //}
                         }
                     }
                 };
@@ -1516,6 +1474,17 @@ namespace wpf
                     file.SetSetting(item.name, "guid", item.guid);
                 }
 
+                //file.SetSetting("history_url", "name", _history_url.name);
+                //file.SetSetting("history_url", "ipaddress", _history_url.ipaddress);
+                ////file.SetSetting("history_url", "subnet", _history_url.subnet);
+                //file.SetSetting("history_url", "desc", _history_url.desc);
+                ////file.SetSetting("history_url", "guid", _history_url.guid);
+
+                //file.SetSetting("edge_url", "name", _edge_url.name);
+                //file.SetSetting("edge_url", "ipaddress", _edge_url.ipaddress);
+                ////file.SetSetting("edge_url", "subnet", _edge_url.subnet);
+                //file.SetSetting("edge_url", "desc", _edge_url.desc);
+                ////file.SetSetting("edge_url", "guid", _edge_url.guid);
                 file.Save(System.IO.Path.Combine(Environment.CurrentDirectory, _deviceinifile));
 
             }
@@ -1550,6 +1519,26 @@ namespace wpf
                     model.desc = file.GetSetting(section, "desc");
                     devices.Add(model);
 
+                    //switch (model.name)
+                    //{
+                    //    case "history_url":
+                    //        {
+                    //            _history_url = model;
+                    //        }
+                    //        break;
+                    //    case "edge_url":
+                    //        {
+                    //            _edge_url = model;
+                    //        }
+                    //        break;
+                    //    default:
+                    //        {
+                    //            model.subnet = file.GetSetting(section, "subnet");
+                    //            model.guid = file.GetSetting(section, "guid");
+                    //            devices.Add(model);
+                    //        }
+                    //        break;
+                    //}
                 }
                 return devices;
             }
@@ -1589,56 +1578,69 @@ namespace wpf
 
         private void tab_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            //list_device_SelectionChanged(sender, e);
+            var tabitem = tab.SelectedItem as TabItem;
+            switch (tabitem.Tag.ToString())
             {
-                //list_device_SelectionChanged(sender, e);
-                var curdevice = list_device.SelectedItem as DeviceModel;
-                var tabitem = tab.SelectedItem as TabItem;
-                switch (tabitem.Tag.ToString())
-                {
-                    case "0":
-                        {
-                            if (_restapi != null)
-                            {
-                                _restapi.Dispose();
-                            }
-                            SpecChartView(curdevice);
-                        }
-                        break;
-                    case "1":
-                        {
-                            HistoryWebNavigate(curdevice);
-                        }
-                        break;
-                    case "2":
-                        {
-                            EdgeWebNavigate(curdevice);
-                        }
-                        break;
-                    case "3":
-                        {
-                            AnalysisWebNavigate(curdevice);
-                        }
-                        break;
-                    case "4":
-                        {
-                            //NodeStatWebNavigate(curdevice);
-                        }
-                        break;
-                    default: break;
+                case "0":
+                    {
+                        //list_device_SelectionChanged(list_device, null);
+                    }
 
-                }
+                    break;
+                case "1":
+                    {
+                        list_device_SelectionChanged(this, null);
+                    }
+                    break;
+                case "2":
+                    {
+                        list_device_SelectionChanged(this, null);
+                    }
+                    break;
+                case "3":
+                    {
+                        var navurl = ConfigurationManager.AppSettings["COLLECTING_SERVER_IP"].ToString();
+                        //edgewebview.CoreWebView2.Navigate(string.Format(navurl, _curdevice.ipaddress));
 
+                        if (analysiswebview.Source == null)
+                        {
+                            analysiswebview.Source = new Uri(navurl);
+                        }
+                        else
+                        {
+                            analysiswebview.CoreWebView2.Navigate(navurl);
+                        }
+
+                        analysiswebview.NavigationCompleted += async (ns, ne) =>
+                        {
+                            //string scripts = $"setInterval(() => document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '', 2000);";
+                            string scripts = @"
+                                        let nIntervId;
+
+                                        function removeBrand() {
+                                          if (!nIntervId) {
+                                            nIntervId = setInterval(removeHTML, 500);
+                                          }
+                                        }
+
+                                        function removeHTML() {
+                                            if (document.getElementsByClassName('tb-powered-by-footer ng-star-inserted').length >= 1) {
+	                                        document.getElementsByClassName('tb-powered-by-footer ng-star-inserted')[0].innerHTML = '';
+	                                        clearInterval(nIntervId);
+	                                        nInterId = null;
+	                                        }
+                                        } removeBrand();";
+
+                            await analysiswebview.CoreWebView2.ExecuteScriptAsync(scripts);
+                        };
+
+
+                    }
+                    break;
+                default:
+                    break;
             }
-            catch (Exception ex)
-            {
-                Logger.Error($"{ex.ToString()}");
-            }
-        }
-
-        private void tab_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            //tab_SelectionChanged(this, null);
         }
 
         /// <summary>
@@ -1727,7 +1729,7 @@ namespace wpf
                                 {
                                     string outputpath = System.IO.Path.Combine(_wavfilesavefolder, $"{Guid.NewGuid().ToString()}.wav");
                                     //string outputpath = $"{Guid.NewGuid().ToString()}.wav";
-                                    Merge2WavFiles.Wav2Merge.Merge(_wavfiles[0], _wavfiles[1], ref outputpath);
+                                    Merge2WavFiles.Wav2Merge.Merge(_wavfiles[1], _wavfiles[0], ref outputpath);
                                     return outputpath;
                                 }
                             }

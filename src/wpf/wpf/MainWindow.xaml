@@ -223,7 +223,7 @@
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Width="200" Height="auto" BorderBrush="Gray" BorderThickness="1" Margin="5" CornerRadius="5" HorizontalAlignment="Stretch">
                 <!--<ListView x:Name="list_device" DataContext="{Binding}" Margin="5"/>-->
-                <ListView x:Name="list_device" DataContext="{Binding}" Margin="5" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Devices}" SelectionMode="Extended"  PreviewMouseLeftButtonUp="list_device_PreviewMouseDoubleClick">
+                <ListView x:Name="list_device" DataContext="{Binding}" Margin="5" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Devices}" SelectionMode="Single"  PreviewMouseLeftButtonUp="list_device_PreviewMouseDoubleClick">
                     <ListView.ContextMenu>
                         <ContextMenu>
                             <!--<MenuItem Header="Delete" Command="{Binding RemoveItem}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>-->
@@ -247,7 +247,7 @@
                             </GridView.ColumnHeaderContainerStyle>
                             <GridViewColumn>
                                 <GridViewColumn.Header>
-                                    <CheckBox Checked="CheckBox_Checked_1" Unchecked="CheckBox_Unchecked_1" Visibility="Collapsed"/>
+                                    <CheckBox Checked="CheckBox_Checked_1" Unchecked="CheckBox_Unchecked_1" Visibility="Hidden"/>
                                 </GridViewColumn.Header>
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
@@ -271,7 +271,7 @@
                 </ListView>
             </Border>
             <!--<Border Grid.Column="1" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Margin="5" Padding="5">-->
-            <TabControl x:Name="tab" Grid.Column="1" Padding="0" Margin="10" SelectionChanged="tab_SelectionChanged" >
+            <TabControl x:Name="tab" Grid.Column="1" Padding="0" Margin="10" SelectionChanged="tab_SelectionChanged">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <!--<Setter Property="BorderThickness" Value="1"/>-->
@@ -309,7 +309,7 @@
                         <!--<chart:SpectrumChartControl />-->
                     </Border>
                 </TabItem>
-                <!--<TabItem Visibility="Collapsed">
+                <TabItem Visibility="Collapsed">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -318,33 +318,29 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5" Visibility="Collapsed">
                             <Button Content="capture image" Click="Button_Click_1"/>
                         </StackPanel>
-                        --><!--<xy_chart:DetectTrendChartControl x:Name="dt_chart" Grid.Row="1"/>--><!--
+                        <!--<xy_chart:DetectTrendChartControl x:Name="dt_chart" Grid.Row="1"/>-->
                         <Wpf:WebView2 Grid.Row="1" x:Name="trendwebview" Source="http://moviclab.com/"/>
                     </Grid>
-                </TabItem>-->
-                <!--<TabItem Visibility="Collapsed">
-                    --><!--<c:PredictControl/>--><!--
+                </TabItem>
+                <TabItem Visibility="Collapsed">
+                    <!--<c:PredictControl/>-->
                     <ContentPresenter x:Name="predict_panel"/>
-                </TabItem>-->
-                <!--<TabItem Visibility="Collapsed">
+                </TabItem>
+                <TabItem Visibility="Collapsed">
                     <Wpf:WebView2 x:Name="settingwebview" Source="http://moviclab.com/" IsEnabled="False" Visibility="Collapsed"/>
-                </TabItem >-->
-                <TabItem Header="History" Tag="1" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp" >
+                </TabItem >
+                <TabItem Header="History" Tag="1">
                     <Border BorderThickness="1" BorderBrush="Gray">
-                        <Wpf:WebView2 x:Name="historywebview" />
+                        <Wpf:WebView2 x:Name="historywebview">
+                        </Wpf:WebView2>
                     </Border>
                 </TabItem>
-                <TabItem Header="Analysis" Tag="3" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp">
+                <TabItem Header="Analysis" Tag="3">
                     <Border BorderThickness="1" BorderBrush="Gray">
                         <Wpf:WebView2 x:Name="analysiswebview" />
                     </Border>
                 </TabItem>
-                <!--<TabItem Header="Node Status" Tag="4" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp" >
-                    <Border BorderThickness="1" BorderBrush="Gray">
-                        <Wpf:WebView2 x:Name="nodestatwebview" Source="{x:Null}" />
-                    </Border>
-                </TabItem>-->
-                <TabItem Header="Edge" Tag="2" PreviewMouseLeftButtonUp="tab_PreviewMouseLeftButtonUp">
+                <TabItem Header="Edge" Tag="2">
                     <Border BorderThickness="1" BorderBrush="Gray">
                         <Grid>
                             <Wpf:WebView2 x:Name="edgewebview" />

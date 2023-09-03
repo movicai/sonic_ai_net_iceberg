@@ -27,6 +27,11 @@ namespace wpf.Models
         //public bool collect { get => _collect; set => _collect = value; }
         public string desc { get => _desc; set => _desc = value; }
 
+        //public string Name
+        //{
+        //	get { return name; }
+        //	set { name = value; }
+        //}
 
         private bool _isselected;
         public bool isselected
@@ -36,6 +41,17 @@ namespace wpf.Models
         }
 
         public string guid { get => _guid; set => _guid = value; }
+
+        //public string ipaddress
+        //{
+        //	get { return ipAddress; }
+        //	set { ipAddress = value; }
+        //}
+        //      public string Subnet
+        //{
+        //	get { return subnet; }
+        //	set { subnet = value; }
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

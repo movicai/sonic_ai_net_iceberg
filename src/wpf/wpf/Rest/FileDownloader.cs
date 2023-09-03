@@ -65,7 +65,7 @@ namespace wpf.Rest
                     {
                         //await File.WriteAllBytesAsync(_localPath, response.RawBytes);
                         await WriteAllBytesAsync(localPath, response.RawBytes);
-                        Console.WriteLine("File downloaded successfully.");
+                        Console.WriteLine($"File downloaded successfully. - {localPath}");
 
                         // Adding file path to queue after successful download
                         if (_queue != null && !_queue.Contains(localPath) && File.ReadAllBytes(localPath).Length > 0)

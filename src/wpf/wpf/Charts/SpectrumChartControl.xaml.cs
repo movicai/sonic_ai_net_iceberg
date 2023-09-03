@@ -128,6 +128,17 @@ namespace InteractiveExamples
             //Start();
             Application.Current.MainWindow.Closing += ApplicationClosingDispose;
 
+            //if (_timer == null)
+            //{
+            //    _timer = new System.Windows.Forms.Timer();
+            //    //_timer.Interval = 1;
+            //    //_timer.Tick += _timer_Tick;
+            //    //_timer.Start();
+            //    //checkBoxAutoYFit.IsChecked = true;
+            //    //comboBoxFFTDisplay.SelectedIndex = 2;
+            //
+            //}
+            //comboBoxFFTWindowLength.SelectedIndex = 4;
 
             _chartReopenCount = Convert.ToInt32(ConfigurationManager.AppSettings["CHART_REOPEN_COUNT"].ToString());
             object lockFlags = new object();
@@ -135,6 +146,8 @@ namespace InteractiveExamples
             _chartWavFileQueue.PropertyChanged += (ps, pe) =>
             {
 
+                //lock (lockFlags)
+                //{
                 Dispatcher.Invoke(async () =>
                 {
                     while (true)
@@ -163,6 +176,7 @@ namespace InteractiveExamples
                     }
                 }, DispatcherPriority.DataBind);
 
+                //}
             };
 
             this.Loaded += (s, e) =>
@@ -595,7 +609,19 @@ namespace InteractiveExamples
                     var filepath = _chartWavFileQueue.Dequeue();
                     if (_chartWavFileQueue.DeQueueCount > _chartReopenCount)
                     {
+                        //CreateChart();
+                        //await Task.Delay(500);
                         InitFft();
+                        //FitY();
+                        //OpenFile(filepath);
+                        //if (checkBoxAutoYFit.IsChecked.Value)
+                        //{
+                        //    FitY();
+                        //}
+                        //_chart.BeginUpdate();
+                        //_chart.ViewXY.SampleDataSeries.Clear();
+                        //_chart.ViewXY.YAxes.Clear();
+                        //_chart.EndUpdate();
                         _chartWavFileQueue.Clear();
                         _chartWavFileQueue.DeQueueCount = 0;
                     }

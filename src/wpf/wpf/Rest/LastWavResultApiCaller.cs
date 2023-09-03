@@ -20,6 +20,7 @@ namespace wpf.Rest
     using wpf.Charts;
     using NLog;
     using SharpDX.DirectWrite;
+    using Arction.RenderingDefinitions;
 
     public class CallEventArgs : EventArgs
     {
@@ -46,6 +47,7 @@ namespace wpf.Rest
         public event LastWavResultApiCallerEventHandler CallerResultEvent;
         private int _request_timeout = Convert.ToInt32(ConfigurationManager.AppSettings["REST_API_CALL_TIMEOUT"].ToString());
         private bool _debugmode = Convert.ToBoolean(ConfigurationManager.AppSettings["DEBUG_MODE"].ToString());
+        private int _request_interval = Convert.ToInt32(ConfigurationManager.AppSettings["WAV_FILE_REQ_INTERVAL"].ToString());
 
         public LastWavResultApiCaller(string apiIp, ChartWavFileQueue chartqueue)
         {
@@ -69,8 +71,8 @@ namespace wpf.Rest
 
         public void Start()
         {
-            _timer = new Timer(1000);  // Set one second interval
-            _timer.Elapsed += OnTimedEvent_iceburg;
+            _timer = new Timer(_request_interval);  // Set one second interval
+            _timer.Elapsed += OnTimedEvent;
             _timer.AutoReset = true;  // Have the timer fire repeated events
             _timer.Enabled = true;  // Start the timer
             _timer.Start();
@@ -138,11 +140,15 @@ namespace wpf.Rest
             }
         }
 
-        private async void OnTimedEvent(object source, ElapsedEventArgs e)
+        object _last_async_status = null;
+        /// <summary>
+        /// [Deprecate]
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            var curtime = DateTime.Now;
-            curtime.ToString("YYYYMMDDHHmmss");
-            var client = new RestClient($"http://{_apiIp}:8082/wavresult/getlastwavresult");
+            var client = new RestClient($"http://{_apiIp}:8080/lastwav.txt");
             var request = new RestRequest();
             request.Method = Method.Get;
             request.Timeout = _request_timeout;
@@ -157,19 +163,23 @@ namespace wpf.Rest
                     Console.WriteLine($"Response: {response.Content}");
 
 
-                    var result = JsonConvert.DeserializeObject<LastWavResultJsonData>(response.Content);
+                    var result = response.Content;//JsonConvert.DeserializeObject<string>(response.Content);
                     if (result != null)
                     {
-                        var filename = result.filename.Trim();
+                        var filename = result.Trim();
                         if (_filename != filename)
                         {
-                            var fsurl = $"http://{_apiIp}:8082/files/{filename}";
+                            var fsurl = $"http://{_apiIp}:8080/wav/{filename}";
                             if (!Directory.Exists(_wavfilesavefolder))
                             {
                                 Directory.CreateDirectory(_wavfilesavefolder);
                             }
                             string localpath = System.IO.Path.Combine(_wavfilesavefolder, $"{Guid.NewGuid().ToString()}.wav");
-                            await _fileDownloader.DownloadAndQueueAsync(fsurl, localpath);
+                            Task.Run(async () =>
+                            {
+                                await _fileDownloader.DownloadAndQueueAsync(fsurl, localpath);
+                            });
+
                             _filename = filename;
                         }
                     }
@@ -185,6 +195,8 @@ namespace wpf.Rest
                 MainWindow.Logger.Error(ex.Message);
             }
         }
+
+
         protected async Task<bool> WavHeaderReq(DateTime curtime, int subtime = 0, RestSharp.Method method = Method.Head)
         {
             curtime = curtime.AddSeconds(subtime);
